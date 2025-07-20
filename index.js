@@ -51,6 +51,26 @@ app.get("/api/notes/:id", (request, response) => {
   }
 });
 
+app.put('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  const body = request.body
+
+  const note = notes.find(note => note.id === id)
+  
+  if (!note) {
+    return response.status(404).end()
+  }
+
+  const updatedNote = { ...note, important: body.important }
+
+  notes = notes.map(note => note.id !== id ? note : updatedNote)
+
+  response.json(updatedNote)
+})
+
+
+
+
 const generateId = () => {
   const maxId =
     notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
