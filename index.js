@@ -1,6 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 
+app.use(cors());
 app.use(express.static("dist"));
 
 let notes = [
@@ -51,25 +53,22 @@ app.get("/api/notes/:id", (request, response) => {
   }
 });
 
-app.put('/api/notes/:id', (request, response) => {
-  const id = request.params.id
-  const body = request.body
+app.put("/api/notes/:id", (request, response) => {
+  const id = request.params.id;
+  const body = request.body;
 
-  const note = notes.find(note => note.id === id)
-  
+  const note = notes.find((note) => note.id === id);
+
   if (!note) {
-    return response.status(404).end()
+    return response.status(404).end();
   }
 
-  const updatedNote = { ...note, important: body.important }
+  const updatedNote = { ...note, important: body.important };
 
-  notes = notes.map(note => note.id !== id ? note : updatedNote)
+  notes = notes.map((note) => (note.id !== id ? note : updatedNote));
 
-  response.json(updatedNote)
-})
-
-
-
+  response.json(updatedNote);
+});
 
 const generateId = () => {
   const maxId =
