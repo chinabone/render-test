@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.static("dist"));
+
 let notes = [
   {
     id: "1",
@@ -81,8 +83,6 @@ app.delete("/api/notes/:id", (request, response) => {
 
   response.status(204).end();
 });
-
-app.use(unknownEndpoint);
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
